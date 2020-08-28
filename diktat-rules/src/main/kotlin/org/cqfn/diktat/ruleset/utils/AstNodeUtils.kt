@@ -31,19 +31,13 @@ fun ASTNode.checkLength(range: IntRange): Boolean = this.textLength in range
  * getting first child name with IDENTIFIER type
  */
 fun ASTNode.getIdentifierName(): ASTNode? =
-        this.getChildren(null).find { it.elementType == ElementType.IDENTIFIER }
+        this.getFirstChildWithType(ElementType.IDENTIFIER)
 
 /**
  * getting first child name with TYPE_PARAMETER_LIST type
  */
 fun ASTNode.getTypeParameterList(): ASTNode? =
-        this.getChildren(null).find { it.elementType == ElementType.TYPE_PARAMETER_LIST }
-
-/**
- * getting all children that have IDENTIFIER type
- */
-fun ASTNode.getAllIdentifierChildren(): List<ASTNode> =
-        this.getChildren(null).filter { it.elementType == ElementType.IDENTIFIER }
+        this.getFirstChildWithType(ElementType.TYPE_PARAMETER_LIST)
 
 
 /**
@@ -56,9 +50,9 @@ fun ASTNode.getAllChildrenWithType(elementType: IElementType): List<ASTNode> =
  * obviously returns first child that match particular element type
  */
 fun ASTNode.getFirstChildWithType(elementType: IElementType): ASTNode? =
-        this.getChildren(null).find { it.elementType == elementType }
+        this.findChildByType(elementType)
 
-/**
+/**s
  * Checks if the symbols in this node are at the end of line
  */
 fun ASTNode.isEol() = parent({ it.treeNext != null }, false)?.isFollowedByNewline() ?: true

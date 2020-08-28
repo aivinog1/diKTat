@@ -149,6 +149,25 @@ class StringConcatenationWarnTest {
 
     @Test
     @Tag(WarningNames.STRING_CONCATENATION)
+    fun `string concatenation - first operand is a non string`() {
+        lintMethod(StringConcatenationRule(),
+                """
+                    | val a = 1 + 2 + ("1" + 3).toInt()
+                    | val b = 1.0 + 2.0 + ("1" + 3.0).toFloat()
+                    | val c = 1.0 + 2.0 + ("1" + 3.0).toFloat()
+                    |
+                """.trimMargin(),
+                LintError(1, 19, ruleId, Warnings.STRING_CONCATENATION.warnText() +
+                        " 1 + 2 + (\"1\" + 3).toInt()", canBeAutoCorrected),
+                LintError(2, 23, ruleId, Warnings.STRING_CONCATENATION.warnText() +
+                        " 1.0 + 2.0 + (\"1\" + 3.0).toFloat()", canBeAutoCorrected),
+                LintError(3, 23, ruleId, Warnings.STRING_CONCATENATION.warnText() +
+                        " 1.0 + 2.0 + (\"1\" + 3.0).toFloat()", canBeAutoCorrected)
+        )
+    }
+
+    @Test
+    @Tag(WarningNames.STRING_CONCATENATION)
     fun `string concatenation - three lines `() {
         lintMethod(StringConcatenationRule(),
                 """
@@ -171,4 +190,5 @@ class StringConcatenationWarnTest {
                 """.trimMargin()
         )
     }
+
 }

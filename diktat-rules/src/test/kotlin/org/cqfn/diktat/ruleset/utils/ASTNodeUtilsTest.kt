@@ -140,7 +140,7 @@ class ASTNodeUtilsTest {
         """.trimIndent()
         val list = listOf("Test", "foo", "a", "a", "Int", "Int", "a")
         applyToCode(code, 7) { node, counter ->
-            node.getAllIdentifierChildren().ifNotEmpty {
+            node.getAllChildrenWithType(IDENTIFIER).ifNotEmpty {
                 this.forEach { Assertions.assertEquals(list[counter.get()], it.text) }
                 counter.incrementAndGet()
             }
