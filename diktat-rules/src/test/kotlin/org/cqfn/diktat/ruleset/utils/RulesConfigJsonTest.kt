@@ -16,7 +16,7 @@ class RulesConfigJsonTest {
     @Test
     fun `read rules config json`() {
         val allRulesFromConfig = readAllRulesFromConfig()
-        val allRulesFromCode = readAllRulesFromCode()
+        val allRulesFromCode = readAllRulesFromCode().filter { it != Warnings.DUMMY_TEST_WARNING }
 
         allRulesFromCode.forEach { rule ->
             val foundRule = allRulesFromConfig.getRuleConfig(rule)

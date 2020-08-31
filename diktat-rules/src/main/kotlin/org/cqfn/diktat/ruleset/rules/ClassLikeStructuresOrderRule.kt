@@ -26,7 +26,7 @@ import com.pinterest.ktlint.core.ast.prevSibling
 import org.cqfn.diktat.common.config.rules.RulesConfig
 import org.cqfn.diktat.ruleset.constants.Warnings.BLANK_LINE_BETWEEN_PROPERTIES
 import org.cqfn.diktat.ruleset.constants.Warnings.WRONG_ORDER_IN_CLASS_LIKE_STRUCTURES
-import org.cqfn.diktat.ruleset.utils.findAllNodesWithSpecificType
+import org.cqfn.diktat.ruleset.utils.findAllDescendantsWithSpecificType
 import org.cqfn.diktat.ruleset.utils.findLeafWithSpecificType
 import org.cqfn.diktat.ruleset.utils.getIdentifierName
 import org.cqfn.diktat.ruleset.utils.handleIncorrectOrder
@@ -73,7 +73,7 @@ class ClassLikeStructuresOrderRule : Rule("class-like-structures") {
         val methods = node.getChildren(TokenSet.create(FUN)).toMutableList()
         val (usedClasses, unusedClasses) = node.getChildren(TokenSet.create(CLASS)).partition { classNode ->
             classNode.getIdentifierName()?.let { identifierNode ->
-                node.parent(FILE)!!.findAllNodesWithSpecificType(REFERENCE_EXPRESSION).any { ref ->
+                node.parent(FILE)!!.findAllDescendantsWithSpecificType(REFERENCE_EXPRESSION).any { ref ->
                     ref.parent({ it == classNode }) == null && ref.text.contains(identifierNode.text)
                 }
             } ?: false

@@ -8,7 +8,7 @@ import org.cqfn.diktat.util.FixTestBase
 import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
 
-class ConsecutiveSpacesRuleFixTest : FixTestBase("test/paragraph3/spaces", ConsecutiveSpacesRule(),
+class ConsecutiveSpacesRuleFixTest : FixTestBase("test/chapter3/spaces", listOf(ConsecutiveSpacesRule()),
         listOf(
                 RulesConfig(Warnings.TOO_MANY_CONSECUTIVE_SPACES.name, true,
                         mapOf(

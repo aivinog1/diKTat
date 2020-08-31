@@ -35,7 +35,8 @@ class KotlinParser {
     }
 
     fun createNode(text: String, isPackage: Boolean = false): ASTNode {
-        return makeNode(text, isPackage) ?: throw KotlinParseException("Your text is not valid")
+        return makeNode(text, isPackage)
+                ?: throw KotlinParseException("Text <$text> that was provided to create a node is not valid. Invalid Koltin code?")
     }
 
     /**

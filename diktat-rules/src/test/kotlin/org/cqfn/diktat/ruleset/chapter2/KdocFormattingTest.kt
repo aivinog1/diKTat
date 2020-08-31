@@ -27,7 +27,7 @@ class KdocFormattingTest {
     fun `there should be no blank line between kdoc and it's declaration code`() {
         val code =
             """
-                    package org.cqfn.diktat.test.resources.test.paragraph2.kdoc
+                    package org.cqfn.diktat.test.resources.test.chapter2.kdoc
 
                     /**
                      * declaration for some constant

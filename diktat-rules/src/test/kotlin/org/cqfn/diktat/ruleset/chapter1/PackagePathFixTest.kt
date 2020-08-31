@@ -9,8 +9,8 @@ import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
 
 class PackagePathFixTest : FixTestBase(
-    "test/paragraph1/naming/package/src/main/kotlin",
-    PackageNaming(),
+    "test/chapter1/naming/package/src/main/kotlin",
+        listOf(PackageNaming()),
     listOf(RulesConfig(Warnings.PACKAGE_NAME_MISSING.name, true, mapOf("domainName" to "org.cqfn.diktat")))
 ) {
 

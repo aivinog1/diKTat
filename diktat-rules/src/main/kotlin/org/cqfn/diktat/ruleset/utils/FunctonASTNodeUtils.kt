@@ -18,7 +18,7 @@ fun ASTNode.hasTestAnnotation(): Boolean {
     checkNodeIsFun(this)
     return findChildByType(MODIFIER_LIST)
             ?.getAllChildrenWithType(ANNOTATION_ENTRY)
-            ?.flatMap { it.findAllNodesWithSpecificType(CONSTRUCTOR_CALLEE) }
+            ?.flatMap { it.findAllDescendantsWithSpecificType(CONSTRUCTOR_CALLEE) }
             ?.any { it.findLeafWithSpecificType(IDENTIFIER)?.text == "Test" }
             ?: false
 }

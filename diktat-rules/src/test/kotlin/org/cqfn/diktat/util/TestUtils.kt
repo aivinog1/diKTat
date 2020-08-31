@@ -24,7 +24,7 @@ fun lintMethod(rule: Rule,
             KtLint.Params(
                     fileName = fileName ?: TEST_FILE_NAME,
                     text = code,
-                    ruleSets = listOf(DiktatRuleSetProvider4Test(rule, rulesConfigList).get()),
+                    ruleSets = listOf(DiktatRuleSetProvider4Test(listOf(rule), rulesConfigList).get()),
                     cb = { e, _ -> res.add(e) }
             )
     )
@@ -42,8 +42,8 @@ fun lintMethod(rule: Rule,
             }
 }
 
-internal fun Rule.format(text: String, fileName: String,
-                         rulesConfigList: List<RulesConfig>? = emptyList()): String {
+internal fun List<Rule>.format(text: String, fileName: String,
+                               rulesConfigList: List<RulesConfig>? = emptyList()): String {
     return KtLint.format(
             KtLint.Params(
                     text = text,

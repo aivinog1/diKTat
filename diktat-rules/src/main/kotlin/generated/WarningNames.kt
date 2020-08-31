@@ -5,6 +5,8 @@ package generated
 import kotlin.String
 
 object WarningNames {
+    const val DUMMY_TEST_WARNING: String = "DUMMY_TEST_WARNING"
+
     const val PACKAGE_NAME_MISSING: String = "PACKAGE_NAME_MISSING"
 
     const val PACKAGE_NAME_INCORRECT_CASE: String = "PACKAGE_NAME_INCORRECT_CASE"

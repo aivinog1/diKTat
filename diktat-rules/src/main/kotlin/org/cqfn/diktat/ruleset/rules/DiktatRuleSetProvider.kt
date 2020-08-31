@@ -6,6 +6,7 @@ import com.pinterest.ktlint.core.RuleSet
 import com.pinterest.ktlint.core.RuleSetProvider
 import org.cqfn.diktat.common.config.rules.RulesConfig
 import org.cqfn.diktat.common.config.rules.RulesConfigReader
+import org.cqfn.diktat.ruleset.dummy.DummyWarning
 import org.cqfn.diktat.ruleset.rules.comments.CommentsRule
 import org.cqfn.diktat.ruleset.rules.files.BlankLinesRule
 import org.cqfn.diktat.ruleset.rules.files.FileSize
@@ -30,24 +31,27 @@ class DiktatRuleSetProvider(private val jsonRulesConfig: String = "rules-config.
     override fun get(): RuleSet {
         log.debug("Will run $DIKTAT_RULE_SET_ID with $jsonRulesConfig (it can be placed to the run directory or the default file from resources will be used)")
         return RuleSetDiktat(
-            RulesConfigReader(javaClass.classLoader).readResource(jsonRulesConfig) ?: listOf(),
-            CommentsRule(),
-            KdocComments(),
-            KdocMethods(),
-            KdocFormatting(),
-            FileNaming(),
-            PackageNaming(),
-            FileSize(),
-            IdentifierNaming(),
-            BracesInConditionalsAndLoopsRule(),
-            BlockStructureBraces(),
-            EmptyBlock(),
-            LineLength(),
-            BlankLinesRule(),
-            WhiteSpaceRule(),
-            FileStructureRule(),  // this rule should be right before indentation because it should operate on already valid code
-            NewlinesRule(),  // newlines need to be inserted right before fixing indentation
-            IndentationRule()  // indentation rule should be the last because it fixes formatting after all the changes done by previous rules
+                RulesConfigReader(javaClass.classLoader).readResource(jsonRulesConfig) ?: listOf(),
+                StringConcatenationRule(),
+                CommentsRule(),
+                KdocComments(),
+                KdocMethods(),
+                KdocFormatting(),
+                FileNaming(),
+                PackageNaming(),
+                FileSize(),
+                IdentifierNaming(),
+                BracesInConditionalsAndLoopsRule(),
+                BlockStructureBraces(),
+                EmptyBlock(),
+                LineLength(),
+                BlankLinesRule(),
+                WhiteSpaceRule(),
+                FileStructureRule(),  // this rule should be right before indentation because it should operate on already valid code
+                NewlinesRule(),  // newlines need to be inserted right before fixing indentation
+                IndentationRule(),  // indentation rule should be the last because it fixes formatting after all the changes done by previous rules,
+
+                DummyWarning() // dummy warnings for tests and manual debug, do not use or change it
         )
     }
 

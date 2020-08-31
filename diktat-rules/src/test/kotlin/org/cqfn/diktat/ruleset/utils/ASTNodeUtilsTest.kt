@@ -4,6 +4,7 @@ import com.pinterest.ktlint.core.KtLint
 import com.pinterest.ktlint.core.Rule
 import com.pinterest.ktlint.core.RuleSet
 import com.pinterest.ktlint.core.ast.ElementType
+import com.pinterest.ktlint.core.ast.ElementType.BINARY_EXPRESSION
 import com.pinterest.ktlint.core.ast.ElementType.CLASS
 import com.pinterest.ktlint.core.ast.ElementType.CLASS_BODY
 import com.pinterest.ktlint.core.ast.ElementType.EQ
@@ -544,8 +545,31 @@ class ASTNodeUtilsTest {
                 listResults.add(node)
             }
         }
-        val listTypes = firstNode?.findAllNodesWithSpecificType(IDENTIFIER)
+        val listTypes = firstNode?.findAllDescendantsWithSpecificType(IDENTIFIER)
         Assertions.assertEquals(listResults, listTypes)
+    }
+
+    @Test
+    fun `test getAllDescendantsWithLevel`() {
+        val code = """
+            val a = (1 + 2)*3 + (5 + (6 + 7) + (9 - 8))
+        """.trimIndent()
+        var firstNode: ASTNode? = null
+        val listResults = mapOf(
+                "(1 + 2)*3 + (5 + (6 + 7) + (9 - 8))" to 2,
+                "(1 + 2)*3" to 3,
+                "1 + 2" to 5,
+                "5 + (6 + 7) + (9 - 8)" to 4,
+                "5 + (6 + 7)" to 5,
+                "6 + 7" to 7,
+                "9 - 8" to 6
+        )
+        applyToCode(code, 0) { node, _ ->
+            if (firstNode == null)
+                firstNode = node
+        }
+        val listTypes = firstNode?.getAllDescendantsWithLevel { it.elementType == BINARY_EXPRESSION }
+        Assertions.assertEquals(listResults, listTypes?.entries?.associate { it.key.text to it.value })
     }
 
     @Test

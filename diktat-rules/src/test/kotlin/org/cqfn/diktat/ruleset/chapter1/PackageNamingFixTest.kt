@@ -9,8 +9,8 @@ import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
 
 class PackageNamingFixTest : FixTestBase(
-    "test/paragraph1/naming/package",
-    PackageNaming(),
+    "test/chapter1/naming/package",
+        listOf(PackageNaming()),
     listOf(RulesConfig(PACKAGE_NAME_MISSING.name, true, mapOf("domainName" to "org.cqfn.diktat")))
 ) {
     @Test

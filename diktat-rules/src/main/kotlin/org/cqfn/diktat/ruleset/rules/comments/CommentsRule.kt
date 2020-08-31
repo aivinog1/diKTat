@@ -10,7 +10,7 @@ import com.pinterest.ktlint.core.ast.prevSibling
 import org.cqfn.diktat.common.config.rules.RulesConfig
 import org.cqfn.diktat.ruleset.constants.Warnings.COMMENTED_OUT_CODE
 import org.cqfn.diktat.ruleset.rules.getDiktatConfigRules
-import org.cqfn.diktat.ruleset.utils.findAllNodesWithSpecificType
+import org.cqfn.diktat.ruleset.utils.findAllDescendantsWithSpecificType
 import org.jetbrains.kotlin.com.intellij.lang.ASTNode
 import org.jetbrains.kotlin.com.intellij.psi.TokenType
 import org.jetbrains.kotlin.lexer.KtTokens
@@ -63,7 +63,7 @@ class CommentsRule : Rule("comments") {
      */
     private fun checkCommentedCode(node: ASTNode) {
         val eolCommentsOffsetToText = getOffsetsToTextBlocksFromEOLComments(node)
-        val blockCommentsOffsetToText = node.findAllNodesWithSpecificType(BLOCK_COMMENT).map { it.startOffset to it.text.removeSurrounding("/*", "*/") }
+        val blockCommentsOffsetToText = node.findAllDescendantsWithSpecificType(BLOCK_COMMENT).map { it.startOffset to it.text.removeSurrounding("/*", "*/") }
 
         (eolCommentsOffsetToText + blockCommentsOffsetToText)
             .flatMap { (offset, text) ->
@@ -82,7 +82,7 @@ class CommentsRule : Rule("comments") {
                 }
             }
             .filter { (_, parsedNode) ->
-                parsedNode.findAllNodesWithSpecificType(TokenType.ERROR_ELEMENT).isEmpty()
+                parsedNode.findAllDescendantsWithSpecificType(TokenType.ERROR_ELEMENT).isEmpty()
             }.forEach { (offset, parsedNode) ->
                 COMMENTED_OUT_CODE.warn(configRules, emitWarn, isFixMode, parsedNode.text.substringBefore("\n").trim(), offset)
             }
@@ -95,7 +95,7 @@ class CommentsRule : Rule("comments") {
      * fixme: in this case offset is lost for lines which will be split once more
      */
     private fun getOffsetsToTextBlocksFromEOLComments(node: ASTNode): List<Pair<Int, String>> {
-        val comments = node.findAllNodesWithSpecificType(EOL_COMMENT)
+        val comments = node.findAllDescendantsWithSpecificType(EOL_COMMENT)
             .filter { !it.text.contains(EOL_COMMENT_START) }
         return if (comments.isNotEmpty()) {
             val result = mutableListOf(mutableListOf(comments.first()))

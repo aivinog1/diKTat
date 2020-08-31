@@ -16,7 +16,6 @@ import com.pinterest.ktlint.core.ast.ElementType.WHITE_SPACE
 import org.cqfn.diktat.util.applyToCode
 import org.jetbrains.kotlin.com.intellij.lang.ASTNode
 import org.jetbrains.kotlin.com.intellij.psi.impl.source.tree.PsiWhiteSpaceImpl
-import org.jetbrains.kotlin.psi.KtPsiFactory
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -28,7 +27,7 @@ class KotlinParserTest {
         val node = KotlinParser().createNode("val x: Int = 10")
         Assertions.assertEquals(PROPERTY, node.elementType)
         Assertions.assertEquals("val x: Int = 10", node.text)
-        Assertions.assertEquals(4, node.findAllNodesWithSpecificType(WHITE_SPACE).size)
+        Assertions.assertEquals(4, node.findAllDescendantsWithSpecificType(WHITE_SPACE).size)
     }
 
     @Test
@@ -37,7 +36,7 @@ class KotlinParserTest {
         Assertions.assertEquals(FUN, node.elementType)
         Assertions.assertEquals("fun foo(text: String) = text.toUpperCase()", node.text)
         Assertions.assertEquals("foo", node.getIdentifierName()!!.text)
-        Assertions.assertEquals(4, node.findAllNodesWithSpecificType(WHITE_SPACE).size)
+        Assertions.assertEquals(4, node.findAllDescendantsWithSpecificType(WHITE_SPACE).size)
     }
 
     @Test

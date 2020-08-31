@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Tags
 import org.junit.jupiter.api.Test
 
 class HeaderCommentRuleFixTest : FixTestBase(
-        "test/paragraph2/header",
-        HeaderCommentRule(),
+        "test/chapter2/header",
+        listOf(HeaderCommentRule()),
         listOf(
                 RulesConfig(HEADER_MISSING_OR_WRONG_COPYRIGHT.name, true,
                         mapOf(

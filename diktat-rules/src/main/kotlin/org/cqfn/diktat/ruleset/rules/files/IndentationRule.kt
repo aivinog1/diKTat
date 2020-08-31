@@ -16,7 +16,7 @@ import org.cqfn.diktat.common.config.rules.RulesConfig
 import org.cqfn.diktat.common.config.rules.getRuleConfig
 import org.cqfn.diktat.ruleset.constants.Warnings.WRONG_INDENTATION
 import org.cqfn.diktat.ruleset.rules.getDiktatConfigRules
-import org.cqfn.diktat.ruleset.utils.findAllNodesWithSpecificType
+import org.cqfn.diktat.ruleset.utils.findAllDescendantsWithSpecificType
 import org.cqfn.diktat.ruleset.utils.getAllLeafsWithSpecificType
 import org.cqfn.diktat.ruleset.utils.indentBy
 import org.cqfn.diktat.ruleset.utils.indentation.AssignmentOperatorChecker
@@ -196,7 +196,7 @@ class IndentationRule : Rule("indentation") {
              * Checks whether this exceptional indent is still active. This is a hypotheses that exceptional indentation will end
              * outside of node where it appeared, e.g. when an expression after assignment operator is over.
              */
-            fun isActive(currentNode: ASTNode): Boolean = initiator.findAllNodesWithSpecificType(currentNode.elementType).contains(currentNode)
+            fun isActive(currentNode: ASTNode): Boolean = initiator.findAllDescendantsWithSpecificType(currentNode.elementType).contains(currentNode)
         }
     }
 }

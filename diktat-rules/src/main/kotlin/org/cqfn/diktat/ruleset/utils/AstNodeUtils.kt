@@ -44,7 +44,7 @@ fun ASTNode.getTypeParameterList(): ASTNode? =
 /**
  * check is node doesn't contain error elements
  */
-fun ASTNode.isCorrect(): Boolean = this.findAllNodesWithSpecificType(TokenType.ERROR_ELEMENT).isEmpty()
+fun ASTNode.isCorrect(): Boolean = this.findAllDescendantsWithSpecificType(TokenType.ERROR_ELEMENT).isEmpty()
 
 /**
  * obviously returns list with children that match particular element type
@@ -223,11 +223,25 @@ fun ASTNode.findLeafWithSpecificType(elementType: IElementType): ASTNode? {
 /**
  * This method performs tree traversal and returns all nodes with specific element type
  */
-fun ASTNode.findAllNodesWithSpecificType(elementType: IElementType): List<ASTNode> {
+fun ASTNode.findAllDescendantsWithSpecificType(elementType: IElementType): List<ASTNode> {
     val initialAcc = if (this.elementType == elementType) mutableListOf(this) else mutableListOf()
     return initialAcc + this.getChildren(null).flatMap {
-        it.findAllNodesWithSpecificType(elementType)
+        it.findAllDescendantsWithSpecificType(elementType)
     }
+}
+
+/**
+ * This method performs tree traversal and returns all nodes that match condition (lambda).
+ *
+ */
+fun ASTNode.getAllDescendantsWithLevel(level: Int = 0, condition: (ASTNode) -> Boolean): Map<ASTNode, Int> {
+    val initialAcc = if (condition(this)) mutableMapOf(this to level) else mutableMapOf()
+    this.getChildren(null).forEach {
+        it.getAllDescendantsWithLevel(level + 1, condition).forEach { (key, value) ->
+            initialAcc[key] = value
+        }
+    }
+    return initialAcc
 }
 
 /**

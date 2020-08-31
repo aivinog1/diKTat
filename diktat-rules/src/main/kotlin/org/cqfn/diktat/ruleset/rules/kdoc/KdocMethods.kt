@@ -30,7 +30,7 @@ import org.cqfn.diktat.ruleset.constants.Warnings.KDOC_WITHOUT_RETURN_TAG
 import org.cqfn.diktat.ruleset.constants.Warnings.KDOC_WITHOUT_THROWS_TAG
 import org.cqfn.diktat.ruleset.constants.Warnings.MISSING_KDOC_ON_FUNCTION
 import org.cqfn.diktat.ruleset.rules.getDiktatConfigRules
-import org.cqfn.diktat.ruleset.utils.findAllNodesWithSpecificType
+import org.cqfn.diktat.ruleset.utils.findAllDescendantsWithSpecificType
 import org.cqfn.diktat.ruleset.utils.getBodyLines
 import org.cqfn.diktat.ruleset.utils.getFirstChildWithType
 import org.cqfn.diktat.ruleset.utils.getIdentifierName
@@ -153,7 +153,7 @@ class KdocMethods : Rule("kdoc-methods") {
 
     private fun getExplicitlyThrownExceptions(node: ASTNode): Set<String> {
         val codeBlock = node.getFirstChildWithType(BLOCK)
-        val throwKeywords = codeBlock?.findAllNodesWithSpecificType(THROW)
+        val throwKeywords = codeBlock?.findAllDescendantsWithSpecificType(THROW)
         return throwKeywords?.map {
             // fixme probably `throws` can have other expression types
             it.findChildByType(CALL_EXPRESSION)
